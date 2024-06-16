@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{67552E46-34AB-4CA8-9A11-F72C312DC7A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{75C020B5-1C02-4D9B-AFA0-5AC2B727C557}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+		dotnet.yml = .github/workflows/dotnet.yml
+		nuget.json = nuget.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Module.Email.Abstractions", "src\AspNet.Module.Email.Abstractions\AspNet.Module.Email.Abstractions.csproj", "{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8880C502-DE2F-4B27-8708-30CDC2DF7160}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Module.Email.Tests", "test\AspNet.Module.Email.Tests\AspNet.Module.Email.Tests.csproj", "{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet.Module.Email", "src\AspNet.Module.Email\AspNet.Module.Email.csproj", "{BD55C56C-77D4-45F9-8409-1519C7A14DA7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290} = {67552E46-34AB-4CA8-9A11-F72C312DC7A9}
+		{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772} = {8880C502-DE2F-4B27-8708-30CDC2DF7160}
+		{BD55C56C-77D4-45F9-8409-1519C7A14DA7} = {67552E46-34AB-4CA8-9A11-F72C312DC7A9}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DE770D3-8DD6-4EC4-9055-77FA3E5F7290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61BF6BF8-D9E6-4879-BC85-A1D1D0B7C772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD55C56C-77D4-45F9-8409-1519C7A14DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD55C56C-77D4-45F9-8409-1519C7A14DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD55C56C-77D4-45F9-8409-1519C7A14DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD55C56C-77D4-45F9-8409-1519C7A14DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

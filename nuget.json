@@ -1,0 +1,7 @@
+{
+  "src": "./src",
+  "packages": {
+    "AspNet.Module.Email.Abstractions": true,
+    "AspNet.Module.Email": true
+  }
+}
