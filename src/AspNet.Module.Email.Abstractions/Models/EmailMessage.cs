@@ -5,17 +5,51 @@ namespace AspNet.Module.Email.Models;
 /// <summary>
 ///     Данные сообщение Email
 /// </summary>
-/// <param name="Subject">Тема</param>
-/// <param name="Senders">Отправители</param>
-/// <param name="Recipients">Получатели</param>
-/// <param name="Entities">Объекты в Email</param>
-public record EmailMessage(string Subject, string[] Senders, string[] Recipients, params IEmailEntity[] Entities)
+public record EmailMessage
 {
+    /// <summary>
+    ///     Данные сообщение Email
+    /// </summary>
+    private EmailMessage(string subject, string[] senders, string[] recipients, params IEmailEntity[] entities)
+    {
+        Subject = subject;
+        Senders = senders;
+        SmtpUsernameAsSender = false;
+        Recipients = recipients;
+        Entities = entities;
+    }
+
+    private EmailMessage(string subject, string[] recipients, params IEmailEntity[] entities)
+    {
+        Subject = subject;
+        Senders = [];
+        SmtpUsernameAsSender = true;
+        Recipients = recipients;
+        Entities = entities;
+    }
+
+    /// <summary>
+    ///     Пользователь SMTP как отправитель
+    /// </summary>
+    internal bool SmtpUsernameAsSender { get; }
+
+    /// <summary>Объекты в Email</summary>
+    public IEmailEntity[] Entities { get; }
+
     /// <summary>
     ///     ИД Email
     /// </summary>
     // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
     public Guid? Id { get; set; } = null!;
+
+    /// <summary>Получатели</summary>
+    public string[] Recipients { get; }
+
+    /// <summary>Отправители</summary>
+    public string[] Senders { get; }
+
+    /// <summary>Тема</summary>
+    public string Subject { get; }
 
     // ReSharper disable once UnusedParameter.Global
     protected virtual Task<MimeEntity> ResolveFallbackEntity(IEmailEntity entity, CancellationToken ct) =>
@@ -71,4 +105,10 @@ public record EmailMessage(string Subject, string[] Senders, string[] Recipients
         {
             Text = text
         };
+
+    public static EmailMessage WithSenders(string subject, string[] senders, string[] recipients,
+        params IEmailEntity[] entities) => new(subject, senders, recipients, entities);
+
+    public static EmailMessage WithSmtpUsernameAsSender(string subject, string[] recipients,
+        params IEmailEntity[] entities) => new(subject, recipients, entities);
 }

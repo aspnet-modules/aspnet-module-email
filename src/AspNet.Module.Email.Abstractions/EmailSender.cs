@@ -2,7 +2,6 @@
 using AspNet.Module.Email.Models;
 using AspNet.Module.Email.Options;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -12,24 +11,12 @@ using MimeKit;
 namespace AspNet.Module.Email;
 
 /// <inheritdoc />
-public class EmailSender : IEmailSender
+public class EmailSender(IOptions<EmailOptions> options, ILogger<EmailSender> logger) : IEmailSender
 {
-    private readonly EmailOptions _options;
-
-    /// <summary>
-    ///     Создание сендера
-    /// </summary>
-    public EmailSender(IOptions<EmailOptions> options, ILogger<EmailSender> logger)
-    {
-        _options = options.Value;
-        Logger = logger;
-    }
-
-    private ILogger<EmailSender> Logger { get; }
-
     /// <inheritdoc />
     public async Task<Guid> Send(EmailMessage email, CancellationToken ct = default)
     {
+        var optionsValue = options.Value;
         var emailId = email.Id ?? Guid.NewGuid();
         var scope = new Dictionary<string, object>
         {
@@ -38,7 +25,7 @@ public class EmailSender : IEmailSender
             { "Senders", string.Join(',', email.Senders) },
             { "Recipients", string.Join(',', email.Recipients) }
         };
-        using (Logger.BeginScope(scope))
+        using (logger.BeginScope(scope))
         {
             var message = new MimeMessage();
 
@@ -51,7 +38,16 @@ public class EmailSender : IEmailSender
                 }
                 else
                 {
-                    Logger.LogWarning($"Не удалось добавить отправителя {sender}");
+                    logger.LogWarning($"Не удалось добавить отправителя {sender}");
+                }
+            }
+
+            // SMTP пользователь как отправитель
+            if (email.SmtpUsernameAsSender)
+            {
+                if (MailboxAddress.TryParse(optionsValue.Smtp.Username, out var senderAddress))
+                {
+                    message.From.Add(senderAddress);
                 }
             }
 
@@ -64,7 +60,7 @@ public class EmailSender : IEmailSender
                 }
                 else
                 {
-                    Logger.LogWarning($"Не удалось добавить получателя {recipient}");
+                    logger.LogWarning($"Не удалось добавить получателя {recipient}");
                 }
             }
 
@@ -78,24 +74,24 @@ public class EmailSender : IEmailSender
             client.MessageSent += (_, e) => { serverResponse = e.Response; };
 
             // Пропускаем валидацию сертификатов сервера
-            if (!_options.CheckServerCertificates)
+            if (!optionsValue.CheckServerCertificates)
             {
                 client.ServerCertificateValidationCallback = (_, _, _, _) => true;
             }
 
-            await client.ConnectAsync(_options.Smtp.Server, _options.Smtp.Port, SecureSocketOptions.Auto, ct);
+            await client.ConnectAsync(optionsValue.Smtp.Host, optionsValue.Smtp.Port, optionsValue.Smtp.Socket, ct);
             // если есть Username или Password, то авторизуемся
-            if (!string.IsNullOrEmpty(_options.Smtp.Username) || !string.IsNullOrEmpty(_options.Smtp.Password))
+            if (!string.IsNullOrEmpty(optionsValue.Smtp.Username) || !string.IsNullOrEmpty(optionsValue.Smtp.Password))
             {
-                await client.AuthenticateAsync(_options.Smtp.Username, _options.Smtp.Password, ct);
+                await client.AuthenticateAsync(optionsValue.Smtp.Username, optionsValue.Smtp.Password, ct);
             }
 
             await client.SendAsync(message, ct);
             await client.DisconnectAsync(true, ct);
 
-            using (Logger.BeginScope(new Dictionary<string, object> { { "ServerResponse", serverResponse } }))
+            using (logger.BeginScope(new Dictionary<string, object> { { "ServerResponse", serverResponse } }))
             {
-                Logger.LogInformation(
+                logger.LogInformation(
                     $"Письмо «{message.Subject}» отправлено на почту [{string.Join(',', email.Recipients)}]");
             }
         }

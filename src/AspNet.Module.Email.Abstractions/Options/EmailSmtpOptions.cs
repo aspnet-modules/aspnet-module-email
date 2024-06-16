@@ -1,31 +1,43 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using MailKit.Security;
+
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace AspNet.Module.Email.Options;
 
 /// <summary>
 ///     Настройки Smtp
 /// </summary>
-[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
-[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
 public class EmailSmtpOptions
 {
     /// <summary>
+    ///     Сервер
+    /// </summary>
+    [Required]
+    public string Host { get; internal set; } = null!;
+
+    /// <summary>
     ///     Пароль
     /// </summary>
-    public string? Password { get; internal set; }
+    [Required]
+    public string Password { get; internal set; } = null!;
 
     /// <summary>
     ///     Порт
     /// </summary>
+    [Required]
     public int Port { get; internal set; }
 
     /// <summary>
-    ///     Сервер
+    ///     Сокет
     /// </summary>
-    public string Server { get; internal set; } = null!;
+    public SecureSocketOptions Socket { get; internal set; } = SecureSocketOptions.Auto;
 
     /// <summary>
     ///     Логин
     /// </summary>
-    public string? Username { get; internal set; }
+    [Required]
+    public string Username { get; internal set; } = null!;
 }

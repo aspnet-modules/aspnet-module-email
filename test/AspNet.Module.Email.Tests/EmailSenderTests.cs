@@ -43,7 +43,7 @@ public class EmailSenderTests : BaseIocUnitTests<EmailTestFixture>
                 Password = null,
                 Username = null,
                 Port = SmtpPort,
-                Server = SmtpHost
+                Host = SmtpHost
             }
         };
         Options = new OptionsWrapper<EmailOptions>(emailOptions);
@@ -59,9 +59,10 @@ public class EmailSenderTests : BaseIocUnitTests<EmailTestFixture>
         var logger = new XunitLogger<EmailSender>(TestOutputHelper);
         var sender = new EmailSender(Options, logger);
         var fileStream = (MemoryStream)TestFormFile.CreateTextFile().OpenReadStream();
-        var email = new EmailMessage(
+        var email = EmailMessage.WithSenders(
             "Тестовое сообщение",
-            new[] { from }, new[] { to },
+            new[] { from },
+            new[] { to },
             new EmailEntityText("test text", false),
             EmailEntityFile.Excel("report.xlsx", fileStream),
             EmailEntityFile.Csv("report.csv", fileStream),
