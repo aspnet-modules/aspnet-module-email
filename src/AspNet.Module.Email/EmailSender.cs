@@ -1,12 +1,9 @@
-﻿using System.Runtime.CompilerServices;
-using AspNet.Module.Email.Models;
+﻿using AspNet.Module.Email.Models;
 using AspNet.Module.Email.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
-
-[assembly: InternalsVisibleTo("AspNet.Module.Email.Tests")]
 
 namespace AspNet.Module.Email;
 

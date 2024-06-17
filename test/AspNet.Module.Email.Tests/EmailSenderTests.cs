@@ -40,8 +40,8 @@ public class EmailSenderTests : BaseIocUnitTests<EmailTestFixture>
         {
             Smtp = new EmailSmtpOptions
             {
-                Password = null,
-                Username = null,
+                Password = null!,
+                Username = null!,
                 Port = SmtpPort,
                 Host = SmtpHost
             }

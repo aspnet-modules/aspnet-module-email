@@ -16,5 +16,6 @@ public class EmailModule : IAspNetModule
             ctx.Configuration.GetRequiredSection(EmailOptions.Key),
             o => { o.BindNonPublicProperties = true; });
         ctx.Services.AddScoped<IEmailSender, EmailSender>();
+        ctx.Services.AddTransient<IRazorViewToEmailHtmlRenderer, RazorViewToEmailHtmlRenderer>();
     }
 }

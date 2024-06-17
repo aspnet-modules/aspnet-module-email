@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\AspNet.Module.Email.Abstractions\AspNet.Module.Email.Abstractions.csproj"/>
+        <ProjectReference Include="..\..\src\AspNet.Module.Email\AspNet.Module.Email.csproj" />
     </ItemGroup>
 
 </Project>
