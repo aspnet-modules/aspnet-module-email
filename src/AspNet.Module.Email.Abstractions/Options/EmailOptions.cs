@@ -15,6 +15,11 @@ public class EmailOptions
     ///     Настройки Smtp
     /// </summary>
     public EmailSmtpOptions Smtp { get; internal set; } = null!;
+    
+    /// <summary>
+    ///     От кого по умолчанию
+    /// </summary>
+    public string? DefaultFrom { get; internal set; }
 
     /// <summary>
     ///     Ключ модуля Email

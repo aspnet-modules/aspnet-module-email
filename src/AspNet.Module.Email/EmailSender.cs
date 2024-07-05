@@ -48,6 +48,15 @@ public class EmailSender(IOptions<EmailOptions> options, ILogger<EmailSender> lo
                 }
             }
 
+            // SMTP DefaultFrom как отправитель
+            if (message.From.Count == 0 && !string.IsNullOrEmpty(optionsValue.DefaultFrom))
+            {
+                if (MailboxAddress.TryParse(optionsValue.DefaultFrom, out var senderAddress))
+                {
+                    message.From.Add(senderAddress);
+                }
+            }
+
             // Получатели
             foreach (var recipient in email.Recipients)
             {
