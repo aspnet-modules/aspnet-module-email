@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNet.Module.Test.Unit" Version="3.0.0" />
+        <PackageReference Include="AspNet.Module.Test.Unit" Version="3.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
         <PackageReference Include="netDumbster" Version="3.1.1" />
         <PackageReference Include="xunit" Version="2.9.3" />
